@@ -23,7 +23,7 @@ public class WhatsappRepository {
         this.senderMap = new HashMap<Message, User>();
         this.adminMap = new HashMap<Group, User>();
         this.userMobile = new HashSet<>();
-        this.customGroupCount = 1;
+        this.customGroupCount = 0;
         this.messageId = 0;
     }
 
@@ -81,14 +81,15 @@ public class WhatsappRepository {
             setCustomGroupCount(2);
         }
         else {
+            customGroupCount++;
             String groupName = "Group " + customGroupCount;
             group.setName(groupName);
             group.setNumberOfParticipants(users.size());
-            customGroupCount++;
+            adminMap.put(group,users.get(0));
         }
 
         groupUserMap.put(group,users);
-        adminMap.put(group,users.get(0));
+
         return group;
     }
 
