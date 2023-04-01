@@ -23,7 +23,7 @@ public class WhatsappRepository {
         this.senderMap = new HashMap<Message, User>();
         this.adminMap = new HashMap<Group, User>();
         this.userMobile = new HashSet<>();
-        this.customGroupCount = 0;
+        this.customGroupCount = 1;
         this.messageId = 0;
     }
 
@@ -97,9 +97,10 @@ public class WhatsappRepository {
         // The 'i^th' created message has message id 'i'.
         // Return the message id.
 
-//        Message message = new Message();
-        messageId++;
-        return messageId;
+
+        Message message = new Message(messageId+1,content);
+//        messageId++;
+        return messageId+1;
     }
 
                                                                                                     // 4th API
