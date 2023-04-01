@@ -97,10 +97,10 @@ public class WhatsappRepository {
         // The 'i^th' created message has message id 'i'.
         // Return the message id.
 
+        messageId++;
+        Message message = new Message(messageId,content);
 
-        Message message = new Message(messageId+1,content);
-//        messageId++;
-        return messageId+1;
+        return messageId;
     }
 
                                                                                                     // 4th API

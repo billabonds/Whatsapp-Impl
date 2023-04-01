@@ -13,6 +13,7 @@ public class Message {
     public Message(int id, String content) {
         this.id = id;
         this.content = content;
+//        this.timestamp = timestamp;
     }
 
     public int getId() {
