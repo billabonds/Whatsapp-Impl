@@ -79,7 +79,6 @@ public class WhatsappRepository {
         if(users.size() == 2) {
             group.setName(users.get(1).getName());
             group.setNumberOfParticipants(2);
-//            setCustomGroupCount(2);
         }
         else {
             customGroupCount++;
@@ -145,42 +144,46 @@ public class WhatsappRepository {
         //Throw "User is not a participant" if the user is not a part of the group
         //Change the admin of the group to "user" and return "SUCCESS". Note that at one time there is only one admin and the admin rights are transferred from approver to user.
 
-//        if(!groupUserMap.containsKey(group))
-//            throw new Exception("Group does not exist");
-//
-//        if(!approver.equals(adminMap.get(group)))
-//            throw new Exception("Approver does not have rights");
-//
-//        List<User> list = groupUserMap.get(group);
-//
-//        for(User st : list) {
-//            if (!st.equals(user))
-//                throw new Exception("User is not a participant");
-//        }
-//
-//        adminMap.put(group,user);
-//        return "SUCCESS";
-
-        if(groupUserMap.containsKey(group))
-        {
-            User currAdmin = adminMap.get(group);
-
-            if(currAdmin.equals(approver))
-            {
-                List<User> list = groupUserMap.get(group);
-
-                if(list.contains(user))
-                    adminMap.put(group,user) ;
-                else
-                    throw new Exception("User is not a participant");
-            }
-            else
-                throw new Exception("Approver does not have rights");
-        }
-        else
+        if(!groupUserMap.containsKey(group))
             throw new Exception("Group does not exist");
 
+        if(!approver.equals(adminMap.get(group)))
+            throw new Exception("Approver does not have rights");
+
+        List<User> list = groupUserMap.get(group);
+          Boolean flag = false;
+
+        for(User st : list) {
+            if (st.equals(user))
+                flag = true;
+        }
+
+        if(flag == false)
+            throw new Exception("User is not a participant");
+
+        adminMap.put(group,user);
         return "SUCCESS";
+
+//        if(groupUserMap.containsKey(group))
+//        {
+//            User currAdmin = adminMap.get(group);
+//
+//            if(currAdmin.equals(approver))
+//            {
+//                List<User> list = groupUserMap.get(group);
+//
+//                if(list.contains(user))
+//                    adminMap.put(group,user) ;
+//                else
+//                    throw new Exception("User is not a participant");
+//            }
+//            else
+//                throw new Exception("Approver does not have rights");
+//        }
+//        else
+//            throw new Exception("Group does not exist");
+//
+//        return "SUCCESS";
     }
 
                                                                                                     // 6th API
