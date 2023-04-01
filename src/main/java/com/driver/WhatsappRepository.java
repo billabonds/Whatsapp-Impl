@@ -24,7 +24,7 @@ public class WhatsappRepository {
         this.adminMap = new HashMap<Group, User>();
         this.userMobile = new HashSet<>();
         this.customGroupCount = 1;
-        this.messageId = 1;
+        this.messageId = 0;
     }
 
     public int getCustomGroupCount() {
@@ -97,7 +97,7 @@ public class WhatsappRepository {
         // The 'i^th' created message has message id 'i'.
         // Return the message id.
 
-        Message message = new Message();
+//        Message message = new Message();
         messageId++;
         return messageId;
     }
