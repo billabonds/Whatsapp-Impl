@@ -14,6 +14,10 @@ public class WhatsappRepository {
     private HashMap<Message, User> senderMap;
     private HashMap<Group, User> adminMap;
     private HashSet<String> userMobile;
+
+//    private HashMap<User,Group> userGroupMap;                 // make for removeUser API
+
+    private HashMap<User,Boolean> userBool ;                    // make for removeUser API
     private int customGroupCount;
     private int messageId;
 
@@ -23,6 +27,8 @@ public class WhatsappRepository {
         this.senderMap = new HashMap<Message, User>();
         this.adminMap = new HashMap<Group, User>();
         this.userMobile = new HashSet<>();
+//        this.groupUserMap = new HashMap<>();                      // make for removeUser API
+        this.userBool = new HashMap<>();                            // make for removeUser API
         this.customGroupCount = 0;
         this.messageId = 0;
     }
@@ -59,6 +65,8 @@ public class WhatsappRepository {
             user.setMobile(mobile);
 
             userMobile.add(mobile);
+//            userGroupMap.put(user,);
+            userBool.put(user,true);
             return "SUCCESS";
         }
     }
@@ -78,7 +86,8 @@ public class WhatsappRepository {
 
         if(users.size() == 2) {
             group.setName(users.get(1).getName());
-            setCustomGroupCount(2);
+            group.setNumberOfParticipants(2);
+//            setCustomGroupCount(2);
         }
         else {
             customGroupCount++;
@@ -191,14 +200,17 @@ public class WhatsappRepository {
         //If user is not the admin, remove the user from the group, remove all its messages from all the databases, and update relevant attributes accordingly.
         //If user is removed successfully, return (the updated number of users in the group + the updated number of messages in group + the updated number of overall messages)
 
-//        if()
-//        {
-//            if(!)
+//        private HashMap<Group, List<User>> groupUserMap;
+
+//        for(Group gp : groupUserMap.keySet()){
 //
-//            else
-//                throw new Exception("Cannot remove admin");
+//            List<User> list = groupUserMap.get(gp);
+//            if(gp.){
+//
+//            }
 //        }
-//        else
+
+//        if(!userBool.containsKey(user))
 //            throw new Exception("User not found");
 
         return 0;
