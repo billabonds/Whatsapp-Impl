@@ -163,27 +163,6 @@ public class WhatsappRepository {
 
         adminMap.put(group,user);
         return "SUCCESS";
-
-//        if(groupUserMap.containsKey(group))
-//        {
-//            User currAdmin = adminMap.get(group);
-//
-//            if(currAdmin.equals(approver))
-//            {
-//                List<User> list = groupUserMap.get(group);
-//
-//                if(list.contains(user))
-//                    adminMap.put(group,user) ;
-//                else
-//                    throw new Exception("User is not a participant");
-//            }
-//            else
-//                throw new Exception("Approver does not have rights");
-//        }
-//        else
-//            throw new Exception("Group does not exist");
-//
-//        return "SUCCESS";
     }
 
                                                                                                     // 6th API
@@ -197,16 +176,30 @@ public class WhatsappRepository {
 
 //        private HashMap<Group, List<User>> groupUserMap;
 
-//        for(Group gp : groupUserMap.keySet()){
+        Boolean flag = false;
+        Boolean flag_2 = false;
+
+        for(Group gp : groupUserMap.keySet())
+        {
+            List<User> list = groupUserMap.get(gp);
+
+            if(list.contains(user))
+            {
+                flag = true;
+                if(adminMap.get(gp) == user) {
+                    flag_2 = true;
+                    throw new Exception("Cannot remove admin");
+                }
+            }
+        }
+
+//        if(flag_2 == false)
+//        {
 //
-//            List<User> list = groupUserMap.get(gp);
-//            if(gp.){
-//
-//            }
 //        }
 
-//        if(!userBool.containsKey(user))
-//            throw new Exception("User not found");
+        if(flag == false)
+            throw new Exception("User not found");
 
         return 0;
     }
