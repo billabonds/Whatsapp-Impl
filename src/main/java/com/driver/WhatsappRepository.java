@@ -174,34 +174,70 @@ public class WhatsappRepository {
         //If user is not the admin, remove the user from the group, remove all its messages from all the databases, and update relevant attributes accordingly.
         //If user is removed successfully, return (the updated number of users in the group + the updated number of messages in group + the updated number of overall messages)
 
-//        private HashMap<Group, List<User>> groupUserMap;
+        Boolean userFound = false;
+        Group userGroup = null;
 
-        Boolean flag = false;
-        Boolean flag_2 = false;
-
-        for(Group gp : groupUserMap.keySet())
-        {
+        for(Group gp : groupUserMap.keySet()) {
             List<User> list = groupUserMap.get(gp);
 
-            if(list.contains(user))
+            for (User us : list)
             {
-                flag = true;
-                if(adminMap.get(gp) == user) {
-                    flag_2 = true;
-                    throw new Exception("Cannot remove admin");
+                if (us.equals(user))
+                {
+                    if (adminMap.get(gp).equals(user))
+                        throw new Exception("Cannot remove admin");
+
+                    userGroup = gp;
+                    userFound = true;
+                    break;
                 }
             }
+            if(userFound)
+                break;
         }
 
-//        if(flag_2 == false)
-//        {
-//
-//        }
+        if(userFound)
+        {
+            List<User> users = groupUserMap.get(userGroup);
+            List<User> updateUsers = new ArrayList<>();
 
-        if(flag == false)
-            throw new Exception("User not found");
+            for(User participant : users)
+            {
+                if(participant.equals(user))
+                    continue;
 
-        return 0;
+                updateUsers.add(participant);
+            }
+            groupUserMap.put(userGroup,updateUsers);
+
+            List<Message> messages = groupMessageMap.get(userGroup);
+            List<Message> updateMessages = new ArrayList<>();
+
+            for(Message message : messages)
+            {
+                if(senderMap.get(message).equals(user))
+                    continue;
+
+                updateMessages.add(message);
+            }
+            groupMessageMap.put(userGroup,updateMessages);
+
+            HashMap<Message,User> updateSenderMap = new HashMap<>();
+
+            for(Message message : senderMap.keySet())
+            {
+                if(senderMap.get(message).equals(user))
+                    continue;
+
+                updateSenderMap.put(message,senderMap.get(message));
+            }
+
+            senderMap = updateSenderMap;
+
+            return updateUsers.size()+updateMessages.size()+updateSenderMap.size();
+        }
+
+        throw new Exception("User not found");
     }
 
                                                                                                     // 7th API
@@ -210,7 +246,29 @@ public class WhatsappRepository {
         // Find the Kth latest message between start and end (excluding start and end)
         // If the number of messages between given time is less than K, throw "K is greater than the number of messages" exception
 
+        List<Message> messages = new ArrayList<>();
 
-        return "";
+        for(Group gp : groupMessageMap.keySet()){
+            messages.addAll(groupMessageMap.get(gp));
+        }
+
+        List<Message> filterMessages = new ArrayList<>();
+
+        for(Message message : messages){
+            if(message.getTimestamp().after(start) && message.getTimestamp().before(end))
+                filterMessages.add(message);
+        }
+
+        if(filterMessages.size() < K)
+            throw new Exception("K is greater than the number of messages");
+
+        Collections.sort(filterMessages, new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
+                return m2.getTimestamp().compareTo(m1.getTimestamp());
+            }
+        });
+
+        return filterMessages.get(K-1).getContent();
     }
 }
